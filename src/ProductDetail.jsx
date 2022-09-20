@@ -6,6 +6,7 @@ import { getProductData } from "./api";
 import { Link } from "react-router-dom";
 import Loading from "./LoadingPage";
 import Error from "./ErrorPage";
+import MyButton from "./MyButton";
 
 function ProductDetail({ onAddToCart }) {
   const id = +useParams().id;
@@ -87,7 +88,7 @@ function ProductDetail({ onAddToCart }) {
             />
             <button
               onClick={handleButtonClick}
-              className="px-8 py-2 ml-2 bg-red-400 rounded-md bg-primary-default hover:bg-primary-dark"
+              className="px-8 py-2 ml-2 rounded-md bg-primary-default hover:bg-primary-dark"
             >
               add to cart
             </button>
@@ -101,10 +102,7 @@ function ProductDetail({ onAddToCart }) {
             {id > 1 && (
               <Link to={"/Products/" + (id - 1)}>
                 {" "}
-                <button className="px-4 border rounded-md hover:bg-primary-dark drop-shadow-xl border-primary-dark bg-primary-default">
-                  {" "}
-                  privious{" "}
-                </button>
+                <MyButton content={"privious"} />
               </Link>
             )}
           </div>

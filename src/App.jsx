@@ -34,7 +34,8 @@ function App() {
             path="/Products/:id"
             element={<ProductDetail onAddToCart={handleAddToCart} />}
           ></Route>
-          <Route path="/cart" element={<CartPage />}></Route>
+          <Route path="/cart" element={<CartPage cart={cart} />}></Route>
+          */
           <Route path="/*" element={<Error />}></Route>
         </Routes>
       </div>
@@ -44,22 +45,8 @@ function App() {
 }
 export default App;
 
-/*const stu = {
-  name: "lalit",
-  class: "bsc2nd",
-  age: 20,
-  profesiion: "front end developer ",
-  aadress: "ramnagar ",
-};
-const keys = Object.keys(stu);
-const totalKeys = keys.length;
-console.log("keys are", keys);
-console.log("total no of keys in object", totalKeys);
-console.log("values in student is", Object.values(stu));
-
-const target = { a: 1, b: 5 };
-const source = { b: 4, c: 5 };
-const returnTarget = Object.assign(target, source);
-console.log("target", target);
-console.log("source ", source);
-console.log("new var", returnTarget);*/
+const randomNumbers = [10, 123, 25, 78, 11];
+const lessThanTen = randomNumbers.findIndex((num) => {
+  return num < 10;
+});
+console.log("test random", lessThanTen);

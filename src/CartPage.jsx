@@ -4,26 +4,35 @@ import { AiFillHome } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { getProductData } from "./api";
 import { useState } from "react";
+import Loading from "./LoadingPage";
+import { useEffect } from "react";
 
-function CartPage() {
-  const data = [
-    {
-      id: 1,
-      thumbnail:
-        "https://trycasuals.com/wp-content/uploads/2018/06/mug-yellow-4-600x600.jpg",
-      title: "Black coffee mug",
-      price: 25,
-      quantity: 4,
-    },
-    {
-      id: 2,
-      thumbnail:
-        "https://trycasuals.com/wp-content/uploads/2018/06/mug-yellow-4-600x600.jpg",
-      title: "blue printed mug",
-      price: 40,
-      quantity: 6,
-    },
-  ];
+function CartPage({ cart }) {
+  const [productList, setProductList] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  console.log("cart is ", cart);
+  const cartData = cart;
+  const productIds = Object.keys(cart);
+
+  useEffect(function () {
+    const promise = productIds.map(function (productId) {
+      return getProductData(productId);
+    });
+
+    const bigPromise = Promise.all(promise);
+    bigPromise
+      .then(function (products) {
+        setProductList(products);
+        setLoading(false);
+      })
+      .catch(function () {
+        setLoading(false);
+      });
+  }, []);
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="p-4 bg-gray-200 md:p-24">
@@ -57,7 +66,7 @@ function CartPage() {
             </div>
           </div>
         </div>
-        <CartList cart={data} />
+        <CartList data={productList} cartItem={cartData} />
         <div className="flex justify-between px-4 py-8 border border-gray-400 ">
           <div className="flex gap-4">
             <input
