@@ -7,6 +7,9 @@ import ProductDetail from "./ProductDetail";
 import Error from "./ErrorPage";
 import CartPage from "./CartPage";
 import { useState } from "react";
+import SignUpPage from "./SignUpPage";
+import LoginPage from "./LoginPage";
+import ForgetPassPage from "./ForgetPassPage";
 
 function App() {
   const savedDataString = localStorage.getItem("my-cart") || "{}";
@@ -35,7 +38,9 @@ function App() {
             element={<ProductDetail onAddToCart={handleAddToCart} />}
           ></Route>
           <Route path="/cart" element={<CartPage cart={cart} />}></Route>
-          */
+          <Route path="/login" element={<LoginPage />}></Route>
+          <Route path="/signUp" element={<SignUpPage />}></Route>
+          <Route path="/forget" element={<ForgetPassPage />}></Route>
           <Route path="/*" element={<Error />}></Route>
         </Routes>
       </div>
