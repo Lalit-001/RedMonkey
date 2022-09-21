@@ -57,7 +57,7 @@ function LoginPage() {
             <hr className="my-6 border-gray-600 border-y-1" />
             <p className="text-base font-semibold ">
               Don't have an account ?{" "}
-              <Link to="/" className="font-semibold text-red-600 ">
+              <Link to="/signUp" className="font-semibold text-red-600 ">
                 sign up here
               </Link>
             </p>

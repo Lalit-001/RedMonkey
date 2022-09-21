@@ -27,9 +27,11 @@ function CartRow({ id, thumbnail, title, price, quantity }) {
         <div className="box-border w-32 text-base font-bold text-center">
           {price}
         </div>
-        <div className="box-border w-32 text-base font-bold text-center border border-gray-500">
-          {quantity}
-        </div>
+        <input
+          className="box-border w-32 text-base font-bold text-center border border-gray-500"
+          value={total}
+          type="number"
+        />
         <div className="box-border w-32 text-base font-bold text-center ">
           {" "}
           Rs.{price * quantity}
