@@ -16,7 +16,7 @@ function App() {
   const savedData = JSON.parse(savedDataString);
 
   const [cart, setCart] = useState(savedData);
-  console.log("store ki hui cart", cart);
+  //  console.log("store ki hui cart", cart);
   function handleAddToCart(productId, count) {
     const oldCount = cart[productId] || 0;
     const newCart = { ...cart, [productId]: oldCount + count };
@@ -49,9 +49,3 @@ function App() {
   );
 }
 export default App;
-
-const randomNumbers = [10, 123, 25, 78, 11];
-const lessThanTen = randomNumbers.findIndex((num) => {
-  return num < 10;
-});
-console.log("test random", lessThanTen);

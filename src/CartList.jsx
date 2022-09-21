@@ -23,9 +23,11 @@ const data = [
   { id: 4, name: "hello ", price: 7 },
   { id: 8, name: "kese ho", price: 77 },
 ];
-const newdata = data.map(function (oneObj) {
+{
+  /*const newdata = data.map(function (oneObj) {
   const x = oneObj;
   x.quantity = obj[oneObj.id];
   console.log("ids of data", oneObj.id);
   console.log("value of obj", obj[oneObj.id]);
-});
+});*/
+}
