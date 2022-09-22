@@ -32,6 +32,7 @@ function LoginPage() {
     errors,
     handleBlur,
     touched,
+    isValid,
   } = useFormik({
     initialValues: {
       email: "",
@@ -93,6 +94,7 @@ function LoginPage() {
                 >
                   Log In
                 </button>
+
                 <button
                   type="button"
                   onClick={resetForm}
