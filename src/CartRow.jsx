@@ -7,6 +7,9 @@ function CartRow({ id, thumbnail, title, price, quantity }) {
   function DeleteButton() {
     setTotal(0);
   }
+  function handleQuantityChange() {
+    setTotal(+event.target.value);
+  }
 
   if (total == 0) {
     return <div></div>;
@@ -31,10 +34,12 @@ function CartRow({ id, thumbnail, title, price, quantity }) {
           className="box-border w-32 text-base font-bold text-center border border-gray-500"
           value={total}
           type="number"
+          min="0"
+          onChange={handleQuantityChange}
         />
         <div className="box-border w-32 text-base font-bold text-center ">
           {" "}
-          Rs.{price * quantity}
+          Rs.{price * total}
         </div>
       </div>
       <button

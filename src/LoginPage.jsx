@@ -17,10 +17,10 @@ function LoginPage() {
   }
   //{email:hello@lucky ,password:"3486838"}
   const schema = yup.object().shape({
-    email: yup.string().email().required(),
+    email: yup.string().email().required(" Must enter email"),
     password: yup
       .string()
-      .required()
+      .required("Password is required")
       .min(6, "Password must minimum 6 charchters long"),
   });
 
