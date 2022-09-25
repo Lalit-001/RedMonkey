@@ -3,6 +3,9 @@ module.exports = {
   content: ["src/**/*.jsx", "./index.html"],
   theme: {
     extend: {
+      screens: {
+        md1: "939px",
+      },
       colors: {
         primary: {
           light: "rgb(245,148,148)",
@@ -10,10 +13,6 @@ module.exports = {
           dark: "rgb(248,47,47)",
         },
       },
-      black: colors.black,
-      white: colors.white,
-      gray: colors.gray,
-      orange: colors.orange,
     },
   },
   plugins: [],
