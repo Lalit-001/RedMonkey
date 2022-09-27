@@ -1,29 +1,29 @@
 import React from "react";
 import { HiOutlineXCircle } from "react-icons/hi";
 import { useState } from "react";
+import { cartContext } from "./CartPage";
+import { useContext } from "react";
+import { BsArrowReturnRight } from "react-icons/bs";
 
-function CartRow({ id, thumbnail, title, price, quantity }) {
-  const [total, setTotal] = useState(quantity);
-  function DeleteButton() {
-    setTotal(0);
-  }
+function CartRow({ id, thumbnail, title, price }) {
+  const { cartdata, setCartData, updateCart } = useContext(cartContext);
+  const [total, setTotal] = useState(cartdata[id]);
+  const [remove, SetRemove] = useState(false);
+  console.log("quantity is ", total);
+
   function handleQuantityChange() {
     setTotal(+event.target.value);
+    updateCart(id, total);
+    setCartData({ ...cartdata, [id]: total });
   }
 
-  if (total == 0) {
-    return <div></div>;
-  }
   return (
     <div>
       {/*small screen layout------------*/}
       <div className="bg-white md1:hidden">
         <div className="">
           <div className="flex justify-end p-2 border-b border-b-gray-400">
-            <HiOutlineXCircle
-              onClick={DeleteButton}
-              className="text-2xl text-gray-600 hover:text-red-400"
-            />
+            <HiOutlineXCircle className="text-2xl text-gray-600 hover:text-red-400" />
           </div>
           <div className="flex justify-center p-2 border-b border-b-gray-400 ">
             <img src={thumbnail} className="w-32" />
@@ -43,6 +43,7 @@ function CartRow({ id, thumbnail, title, price, quantity }) {
               value={total}
               type="number"
               min="0"
+              max="6"
               onChange={handleQuantityChange}
             />
           </div>
@@ -59,10 +60,7 @@ function CartRow({ id, thumbnail, title, price, quantity }) {
           <div className="flex items-center gap-2">
             <div className="w-4">
               {" "}
-              <HiOutlineXCircle
-                onClick={DeleteButton}
-                className="text-2xl text-gray-600 hover:text-red-400"
-              />
+              <HiOutlineXCircle className="text-2xl text-gray-600 hover:text-red-400" />
             </div>
             <img className="box-border w-32 text-center" src={thumbnail} />
           </div>
@@ -77,6 +75,7 @@ function CartRow({ id, thumbnail, title, price, quantity }) {
             value={total}
             type="number"
             min="0"
+            max="6"
             onChange={handleQuantityChange}
           />
           <div className="box-border w-32 text-base font-bold text-center ">

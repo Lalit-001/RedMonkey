@@ -16,7 +16,6 @@ function App() {
   const savedData = JSON.parse(savedDataString);
 
   const [cart, setCart] = useState(savedData);
-  //  console.log("store ki hui cart", cart);
   function handleAddToCart(productId, count) {
     const oldCount = cart[productId] || 0;
     const newCart = { ...cart, [productId]: oldCount + count };
@@ -24,6 +23,13 @@ function App() {
     const cartString = JSON.stringify(newCart);
     localStorage.setItem("my-cart", cartString);
   }
+  function handleUpdateCart(productId, count) {
+    const newCart = { ...cart, [productId]: count };
+    setCart(newCart);
+    const cartString = JSON.stringify(newCart);
+    localStorage.setItem("my-cart", cartString);
+  }
+
   const totalCount = Object.keys(cart).reduce(function (privious, current) {
     return privious + cart[current];
   }, 0);
@@ -37,7 +43,10 @@ function App() {
             path="/Products/:id"
             element={<ProductDetail onAddToCart={handleAddToCart} />}
           ></Route>
-          <Route path="/cart" element={<CartPage cart={cart} />}></Route>
+          <Route
+            path="/cart"
+            element={<CartPage cart={cart} updateCart={handleUpdateCart} />}
+          ></Route>
           <Route path="/login" element={<LoginPage />}></Route>
           <Route path="/signUp" element={<SignUpPage />}></Route>
           <Route path="/forget" element={<ForgetPassPage />}></Route>

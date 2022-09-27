@@ -1,14 +1,13 @@
 import React from "react";
 import CartRow from "./CartRow";
 
-function CartList({ data, cartItem }) {
+function CartList({ data }) {
   return (
     <div>
       <div>
         {data.map(function (item) {
-          const product = item;
-          item.quantity = cartItem[item.id];
-          return <CartRow key={product.id} {...product} />;
+          return <CartRow key={item.id} {...item} />;
+          // console.log("id is ", id);
         })}
       </div>
     </div>
