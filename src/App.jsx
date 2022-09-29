@@ -21,18 +21,21 @@ function App() {
   function handleAddToCart(productId, count) {
     const oldCount = cart[productId] || 0;
     const newCart = { ...cart, [productId]: oldCount + count };
+    updateCart(newCart);
+  }
+  function updateCart(newCart) {
     setCart(newCart);
     const cartString = JSON.stringify(newCart);
     localStorage.setItem("my-cart", cartString);
   }
-  function handleUpdateCart(id, quantity) {
-    const newCart = { ...cart, [id]: quantity };
-    console.log("cart and id", cart, id, quantity);
-    console.log("new cart is", newCart);
-    setCart(newCart);
-    const cartString = JSON.stringify(newCart);
-    localStorage.setItem("my-cart", cartString);
-  }
+  // function handleUpdateCart(id, quantity) {
+  //   const newCart = { ...cart, [id]: quantity };
+  //   console.log("cart and id", cart, id, quantity);
+  //   console.log("new cart is", newCart);
+  //   setCart(newCart);
+  //   const cartString = JSON.stringify(newCart);
+  //   localStorage.setItem("my-cart", cartString);
+  // }
 
   const totalCount = Object.keys(cart).reduce(function (privious, current) {
     return privious + cart[current];
@@ -49,9 +52,7 @@ function App() {
           ></Route>
           <Route
             path="/cart"
-            element={
-              <CartPage cart={cart} handleUpdateCart={handleUpdateCart} />
-            }
+            element={<CartPage cart={cart} updateCart={updateCart} />}
           ></Route>
           <Route path="/login" element={<LoginPage />}></Route>
           <Route path="/signUp" element={<SignUpPage />}></Route>

@@ -10,35 +10,53 @@ import EmptyCart from "./EmptyCart";
 
 export const cartContext = createContext();
 
-function CartPage({ cart, handleUpdateCart }) {
+function CartPage({ cart, updateCart }) {
   const [productList, setProductList] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const [cartdata, setCartData] = useState(cart);
+  const [localCart, setLocalCart] = useState(cartdata);
 
-  function updateButton(id, quantity) {
-    handleUpdateCart(id, quantity);
-  }
-  // console.log("cartdata at page", cartdata);
-  const data = { cartdata, setCartData, updateButton };
+  useEffect(
+    function () {
+      setLocalCart(cartdata);
+    },
+    [cartdata]
+  );
+
   const productIds = Object.keys(cart);
 
-  useEffect(function () {
-    const promise = productIds.map(function (productId) {
-      return getProductData(productId);
-    });
-
-    const bigPromise = Promise.all(promise);
-    bigPromise
-      .then(function (products) {
-        setProductList(products);
-        setLoading(false);
-      })
-      .catch(function () {
-        setLoading(false);
+  useEffect(
+    function () {
+      const promise = productIds.map(function (productId) {
+        return getProductData(productId);
       });
-  }, []);
 
+      const bigPromise = Promise.all(promise);
+      bigPromise
+        .then(function (products) {
+          setProductList(products);
+          setLoading(false);
+        })
+        .catch(function () {
+          setLoading(false);
+        });
+    },
+    [cartdata]
+  );
+
+  function handleUpdateButton() {
+    updateCart(localCart);
+  }
+
+  const data = {
+    cartdata,
+    setCartData,
+    updateCart,
+    localCart,
+    setLocalCart,
+    setLoading,
+  };
   if (loading) {
     return <Loading />;
   }
@@ -72,7 +90,7 @@ function CartPage({ cart, handleUpdateCart }) {
               </button>
             </div>
             <button
-              onClick={updateButton}
+              onClick={handleUpdateButton}
               className="px-4 py-1 border border-gray-500 rounded-md bg-primary-default"
             >
               Update Cart

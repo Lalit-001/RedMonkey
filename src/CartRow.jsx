@@ -6,12 +6,34 @@ import { useContext } from "react";
 import { BsArrowReturnRight } from "react-icons/bs";
 
 function CartRow({ id, thumbnail, title, price }) {
-  const { cartdata, setCartData, updateButton } = useContext(cartContext);
+  const {
+    cartdata,
+    setCartData,
+    updateCart,
+    localCart,
+    setLocalCart,
+    setLoading,
+  } = useContext(cartContext);
   const [quantity, setQuantity] = useState(cartdata[id]);
-  // const [remove, SetRemove] = useState(false);
+  console.log(" cartdata", cartdata);
 
-  function handleQuantityChange() {
-    setQuantity(+event.target.value);
+  function handleQuantityChange(event) {
+    const newValue = +event.target.value;
+    const productId = +event.target.getAttribute("productid");
+    console.log("now the cart is ", productId, newValue);
+    const newLocalCart = { ...localCart, [productId]: newValue };
+    setLocalCart(newLocalCart);
+    setQuantity(newLocalCart[id]);
+  }
+  function handleRemove(event) {
+    const productId = event.currentTarget.getAttribute("productid");
+    const newCart = { ...cartdata };
+    console.log("product to be removed ", productId);
+    delete newCart[productId];
+    console.log(" cartdata", newCart);
+    setCartData(newCart);
+    updateCart(newCart);
+    setLoading(true);
   }
 
   return (
@@ -19,9 +41,13 @@ function CartRow({ id, thumbnail, title, price }) {
       {/*small screen layout------------*/}
       <div className="overflow-hidden bg-white border border-gray-400 md1:hidden">
         <div className="">
-          <div className="flex justify-end p-2 border-b border-b-gray-400">
+          <button
+            onClick={handleRemove}
+            productid={id}
+            className="flex justify-end p-2 border-b border-b-gray-400"
+          >
             <HiOutlineXCircle className="text-2xl text-gray-600 hover:text-red-400" />
-          </div>
+          </button>
           <div className="flex justify-center p-2 border-b border-b-gray-400 ">
             <img src={thumbnail} className="w-32" />
           </div>
@@ -37,10 +63,11 @@ function CartRow({ id, thumbnail, title, price }) {
             <p className="font-semibold">Quantity:</p>
             <input
               className="w-10 p-1 font-semibold border border-gray-400"
+              productid={id}
               value={quantity}
+              min="1"
+              max="8"
               type="number"
-              min="0"
-              max="6"
               onChange={handleQuantityChange}
             />
           </div>
@@ -55,10 +82,10 @@ function CartRow({ id, thumbnail, title, price }) {
       <div className="hidden border border-gray-400 md1:block">
         <div className="flex flex-col items-center justify-between gap-4 p-6 md:flex-row ">
           <div className="flex items-center gap-2">
-            <div className="w-4">
+            <button onClick={handleRemove} productid={id} className="w-4">
               {" "}
               <HiOutlineXCircle className="text-2xl text-gray-600 hover:text-red-400" />
-            </div>
+            </button>
             <img className="box-border w-32 text-center" src={thumbnail} />
           </div>
           <div className="box-border w-40 mx-2 text-base font-bold text-center text-primary-dark">
@@ -71,9 +98,10 @@ function CartRow({ id, thumbnail, title, price }) {
             <input
               className="box-border text-base font-bold text-center border border-gray-500 w-14"
               value={quantity}
+              productid={id}
               type="number"
-              min="0"
-              max="6"
+              min="1"
+              max="8"
               onChange={handleQuantityChange}
             />
           </div>
