@@ -16,6 +16,8 @@ function App() {
   const savedData = JSON.parse(savedDataString);
 
   const [cart, setCart] = useState(savedData);
+  console.log("cart coming from detailpage", cart);
+
   function handleAddToCart(productId, count) {
     const oldCount = cart[productId] || 0;
     const newCart = { ...cart, [productId]: oldCount + count };
@@ -23,8 +25,10 @@ function App() {
     const cartString = JSON.stringify(newCart);
     localStorage.setItem("my-cart", cartString);
   }
-  function handleUpdateCart(productId, count) {
-    const newCart = { ...cart, [productId]: count };
+  function handleUpdateCart(id, quantity) {
+    const newCart = { ...cart, [id]: quantity };
+    console.log("cart and id", cart, id, quantity);
+    console.log("new cart is", newCart);
     setCart(newCart);
     const cartString = JSON.stringify(newCart);
     localStorage.setItem("my-cart", cartString);
@@ -45,7 +49,9 @@ function App() {
           ></Route>
           <Route
             path="/cart"
-            element={<CartPage cart={cart} updateCart={handleUpdateCart} />}
+            element={
+              <CartPage cart={cart} handleUpdateCart={handleUpdateCart} />
+            }
           ></Route>
           <Route path="/login" element={<LoginPage />}></Route>
           <Route path="/signUp" element={<SignUpPage />}></Route>

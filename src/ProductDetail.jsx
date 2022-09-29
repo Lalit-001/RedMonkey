@@ -31,6 +31,7 @@ function ProductDetail({ onAddToCart }) {
   function handleCountChange() {
     setCount(+event.target.value);
   }
+
   function handleButtonClick() {
     onAddToCart(id, count);
     setCount(1);

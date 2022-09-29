@@ -1,11 +1,35 @@
 import React from "react";
 import CartRow from "./CartRow";
 
-function CartList({ data }) {
+function CartList({ product }) {
   return (
     <div>
+      <div className="hidden md1:block">
+        <div className="flex items-center justify-between gap-4 p-6 border border-gray-400 md:flex-row ">
+          <div className="flex items-center gap-2">
+            <div className="w-4">
+              {" "}
+              <span></span>
+            </div>
+            <span className="box-border w-32 text-center"></span>
+          </div>
+          <div className="box-border w-40 mx-2 text-base font-bold text-center ">
+            Product
+          </div>
+          <div className="box-border w-32 text-base font-bold text-center ">
+            price
+          </div>
+          <div className="box-border w-32 text-base font-bold text-center">
+            Quantity
+          </div>
+          <div className="box-border w-32 text-base font-bold text-center ">
+            {" "}
+            Sub total
+          </div>
+        </div>
+      </div>
       <div>
-        {data.map(function (item) {
+        {product.map(function (item) {
           return <CartRow key={item.id} {...item} />;
           // console.log("id is ", id);
         })}
@@ -14,19 +38,3 @@ function CartList({ data }) {
   );
 }
 export default CartList;
-
-const obj = { 3: 3, 4: 7, 8: 9 };
-const ids = Object.keys(obj);
-const data = [
-  { id: 3, name: "hii", price: 5 },
-  { id: 4, name: "hello ", price: 7 },
-  { id: 8, name: "kese ho", price: 77 },
-];
-{
-  /*const newdata = data.map(function (oneObj) {
-  const x = oneObj;
-  x.quantity = obj[oneObj.id];
-  console.log("ids of data", oneObj.id);
-  console.log("value of obj", obj[oneObj.id]);
-});*/
-}

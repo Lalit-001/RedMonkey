@@ -10,21 +10,18 @@ import EmptyCart from "./EmptyCart";
 
 export const cartContext = createContext();
 
-function CartPage({ cart, updateCart }) {
+function CartPage({ cart, handleUpdateCart }) {
   const [productList, setProductList] = useState([]);
   const [loading, setLoading] = useState(true);
-  const valid = true;
+
   const [cartdata, setCartData] = useState(cart);
 
-  const data = { cartdata, setCartData, updateCart };
-  // console.log("cartdata at page", cartdata);
-
-  function updateButton() {
-    updateCart(+productIds, cartdata[productIds]);
+  function updateButton(id, quantity) {
+    handleUpdateCart(id, quantity);
   }
-
+  // console.log("cartdata at page", cartdata);
+  const data = { cartdata, setCartData, updateButton };
   const productIds = Object.keys(cart);
-  console.log("product ids", productIds);
 
   useEffect(function () {
     const promise = productIds.map(function (productId) {
@@ -57,41 +54,14 @@ function CartPage({ cart, updateCart }) {
           <Link to="/">
             <AiFillHome className="self-start text-2xl text-primary-dark hover:text-black" />{" "}
           </Link>
-          {/*------------for small screen ---------*/}
-          <div className="overflow-hidden border border-gray-400 md1:hidden">
-            <CartList data={productList} />
-          </div>
-          {/*--------------big screen -----------*/}
-          <div className="hidden p-24 bg-white border border-gray-400 md1:block ">
-            <div className="">
-              <div className="flex flex-col items-center justify-between gap-4 p-6 border border-gray-400 md:flex-row ">
-                <div className="flex items-center gap-2">
-                  <div className="w-4">
-                    {" "}
-                    <span></span>
-                  </div>
-                  <span className="box-border w-32 text-center"></span>
-                </div>
-                <div className="box-border w-40 mx-2 text-base font-bold text-center ">
-                  Product
-                </div>
-                <div className="box-border w-32 text-base font-bold text-center ">
-                  price
-                </div>
-                <div className="box-border w-32 text-base font-bold text-center">
-                  Quantity
-                </div>
-                <div className="box-border w-32 text-base font-bold text-center border ">
-                  {" "}
-                  Sub total
-                </div>
-              </div>
 
-              <CartList data={productList} />
+          <div className="bg-white border border-gray-400 ">
+            <div className="">
+              <CartList product={productList} />
             </div>
           </div>
-          <div className="flex flex-col justify-between gap-4 px-4 py-8 border border-gray-400 md1:flex-row ">
-            <div className="flex justify-between gap-4">
+          <div className="flex flex-col justify-between gap-2 px-4 py-8 overflow-hidden border border-gray-400 md1:flex-row ">
+            <div className="flex flex-col justify-between gap-2 md:flex-row ">
               <input
                 type="string"
                 className="text-center border border-gray-700 "
@@ -107,6 +77,26 @@ function CartPage({ cart, updateCart }) {
             >
               Update Cart
             </button>
+          </div>
+
+          <div className="flex flex-col my-6 overflow-hidden border border-gray-400 rounded-sm md1:self-end">
+            <span className="p-4 text-xl font-bold bg-gray-200 border-b border-b-gray-400">
+              Cart Totals{" "}
+            </span>
+            <div className="flex flex-col px-4 py-2">
+              <span className="w-80"></span>
+              <div className="flex justify-between p-4 font-semibold border-b border-t-gray-400 ">
+                <span>Subtotal</span>
+                <span>$104</span>
+              </div>
+              <div className="flex justify-between p-4 font-semibold border-b border-t-gray-400 ">
+                <span>total</span>
+                <span>$222</span>
+              </div>
+              <button className="p-4 font-semibold text-center text-white bg-red-400 rounded-md texy-lg hover:bg-red-600">
+                Proceed to checkout
+              </button>
+            </div>
           </div>
         </div>
       </cartContext.Provider>

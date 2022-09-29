@@ -6,21 +6,18 @@ import { useContext } from "react";
 import { BsArrowReturnRight } from "react-icons/bs";
 
 function CartRow({ id, thumbnail, title, price }) {
-  const { cartdata, setCartData, updateCart } = useContext(cartContext);
-  const [total, setTotal] = useState(cartdata[id]);
-  const [remove, SetRemove] = useState(false);
-  console.log("quantity is ", total);
+  const { cartdata, setCartData, updateButton } = useContext(cartContext);
+  const [quantity, setQuantity] = useState(cartdata[id]);
+  // const [remove, SetRemove] = useState(false);
 
   function handleQuantityChange() {
-    setTotal(+event.target.value);
-    updateCart(id, total);
-    setCartData({ ...cartdata, [id]: total });
+    setQuantity(+event.target.value);
   }
 
   return (
     <div>
       {/*small screen layout------------*/}
-      <div className="bg-white md1:hidden">
+      <div className="overflow-hidden bg-white border border-gray-400 md1:hidden">
         <div className="">
           <div className="flex justify-end p-2 border-b border-b-gray-400">
             <HiOutlineXCircle className="text-2xl text-gray-600 hover:text-red-400" />
@@ -40,7 +37,7 @@ function CartRow({ id, thumbnail, title, price }) {
             <p className="font-semibold">Quantity:</p>
             <input
               className="w-10 p-1 font-semibold border border-gray-400"
-              value={total}
+              value={quantity}
               type="number"
               min="0"
               max="6"
@@ -49,7 +46,7 @@ function CartRow({ id, thumbnail, title, price }) {
           </div>
           <div className="flex justify-between p-2 border-b border-b-gray-400">
             <p className="font-semibold">Subtotal:</p>
-            <span className="font-semibold ">{price * total}</span>
+            <span className="font-semibold ">{price * quantity}</span>
           </div>
         </div>
       </div>
@@ -70,17 +67,19 @@ function CartRow({ id, thumbnail, title, price }) {
           <div className="box-border w-32 text-base font-bold text-center">
             {price}
           </div>
-          <input
-            className="box-border text-base font-bold text-center border border-gray-500 w-14"
-            value={total}
-            type="number"
-            min="0"
-            max="6"
-            onChange={handleQuantityChange}
-          />
+          <div>
+            <input
+              className="box-border text-base font-bold text-center border border-gray-500 w-14"
+              value={quantity}
+              type="number"
+              min="0"
+              max="6"
+              onChange={handleQuantityChange}
+            />
+          </div>
           <div className="box-border w-32 text-base font-bold text-center ">
             {" "}
-            Rs.{price * total}
+            Rs.{price * quantity}
           </div>
         </div>
       </div>
