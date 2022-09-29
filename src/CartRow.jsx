@@ -5,7 +5,7 @@ import { cartContext } from "./CartPage";
 import { useContext } from "react";
 import { BsArrowReturnRight } from "react-icons/bs";
 
-function CartRow({ id, thumbnail, title, price }) {
+function CartRow({ id, thumbnail, title, price, subTotal }) {
   const {
     cartdata,
     setCartData,
@@ -14,6 +14,7 @@ function CartRow({ id, thumbnail, title, price }) {
     setLocalCart,
     setLoading,
   } = useContext(cartContext);
+
   const [quantity, setQuantity] = useState(cartdata[id]);
   console.log(" cartdata", cartdata);
 

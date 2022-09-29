@@ -13,7 +13,7 @@ export const cartContext = createContext();
 function CartPage({ cart, updateCart }) {
   const [productList, setProductList] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const [valid, setValid] = useState(false);
   const [cartdata, setCartData] = useState(cart);
   const [localCart, setLocalCart] = useState(cartdata);
 
@@ -47,6 +47,28 @@ function CartPage({ cart, updateCart }) {
 
   function handleUpdateButton() {
     updateCart(localCart);
+  }
+  const prices = productList.map(function (item) {
+    return item.price;
+  });
+
+  const subTotal = prices.reduce(function (a, b) {
+    return a + b;
+  }, 0);
+
+  const [total, setTotal] = useState(subTotal);
+  console.log("total is ", subTotal);
+
+  function handleApplyChange() {
+    if (event.target.value == "ADHIKARI89") {
+      setValid(true);
+    }
+  }
+  function handleApplyButton() {
+    if (valid) {
+      setTotal(subTotal - subTotal * 0.15);
+      return;
+    }
   }
 
   const data = {
@@ -84,8 +106,12 @@ function CartPage({ cart, updateCart }) {
                 type="string"
                 className="text-center border border-gray-700 "
                 placeholder="Coupon Code"
+                onChange={handleApplyChange}
               />
-              <button className="px-4 py-1 border border-gray-500 rounded-md bg-primary-default">
+              <button
+                onClick={handleApplyButton}
+                className="px-4 py-1 border border-gray-500 rounded-md bg-primary-default"
+              >
                 APPLY COUPON
               </button>
             </div>
@@ -105,11 +131,11 @@ function CartPage({ cart, updateCart }) {
               <span className="w-80"></span>
               <div className="flex justify-between p-4 font-semibold border-b border-t-gray-400 ">
                 <span>Subtotal</span>
-                <span>$104</span>
+                <span>{subTotal}</span>
               </div>
               <div className="flex justify-between p-4 font-semibold border-b border-t-gray-400 ">
                 <span>total</span>
-                <span>$222</span>
+                <span>{total}</span>
               </div>
               <button className="p-4 font-semibold text-center text-white bg-red-400 rounded-md texy-lg hover:bg-red-600">
                 Proceed to checkout

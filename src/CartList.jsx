@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
+import { useState } from "react";
+import { cartContext } from "./CartPage";
 import CartRow from "./CartRow";
 
 function CartList({ product }) {
+  const { cartdata } = useContext(cartContext);
+  // const [total, setTotal] = useState(0);
+
   return (
     <div>
       <div className="hidden md1:block">
@@ -30,8 +35,9 @@ function CartList({ product }) {
       </div>
       <div>
         {product.map(function (item) {
+          // const subTotal = cartdata[item.id] * item.price;
+          // console.log("subtotal", subTotal);
           return <CartRow key={item.id} {...item} />;
-          // console.log("id is ", id);
         })}
       </div>
     </div>
