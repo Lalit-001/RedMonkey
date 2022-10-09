@@ -1,12 +1,15 @@
 import React from "react";
 import { BsCart4 } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { HiX } from "react-icons/hi";
 import { useState } from "react";
 import MobileMenu from "./MobileMenu";
+// import { useContext } from "react";
+// import { userContext } from "./App";
+import { MdPermIdentity } from "react-icons/md";
 
-function Navbar({ productCount }) {
+function Navbar({ productCount, user }) {
   const [homeMenu, setHomeMenu] = useState(false);
 
   function handleHomeMenuOpen() {
@@ -15,6 +18,7 @@ function Navbar({ productCount }) {
   function handleHomeMenuClose() {
     setHomeMenu(false);
   }
+
   return (
     <div className="py-6 bg-white border-b ">
       <nav className="flex flex-row items-center justify-between max-w-6xl px-5 mx-auto">

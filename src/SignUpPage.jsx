@@ -1,46 +1,62 @@
 import React from "react";
 import { RiLockPasswordLine } from "react-icons/ri";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { MdPermIdentity } from "react-icons/md";
-import { BsTelephone } from "react-icons/bs";
 import { HiOutlineMail } from "react-icons/hi";
 import * as yup from "yup";
-import { Formik, Form } from "formik";
+import { Formik, Form, withFormik } from "formik";
 import Input from "./Inputs/Input";
+import axios from "axios";
+// import { useContext } from "react";
+// import { userContext } from "./App";
 
-function SignUpPage() {
-  function callSignupApi(values) {
-    console.log("callSignupApi called");
+function callSignupApi(values, bag) {
+  axios
+    .post("https://myeasykart.codeyogi.io/signup", {
+      fullName: values.name,
+      email: values.email,
+      password: values.password,
+    })
+    .then((response) => {
+      const { user, token } = response.data;
+      console.log("sigup api called", user, token);
+      localStorage.setItem("token", token);
+      bag.props.setUser(user);
+    })
+    .catch(() => {
+      console.log("invalid credential");
+    });
+}
+
+const schema = yup.object().shape({
+  name: yup.string().min(3, "too short name"),
+
+  email: yup.string().email().required(),
+  password: yup
+    .string()
+    .required("this is reqired field")
+    .min(6, "Password must minimum 6 charchters long"),
+});
+
+const initialValues = {
+  name: "",
+  email: "",
+  password: "",
+};
+
+function SignUpPage({
+  handleSubmit,
+  handleBlur,
+  values,
+  errors,
+  handleChange,
+  touched,
+  user,
+}) {
+  console.log("user", user);
+  if (user) {
+    return <Navigate to="/" />;
   }
-
-  //{email:hello@lucky ,password:"3486838"}
-  const schema = yup.object().shape({
-    name: yup.string().min(3, "too short name"),
-    mobileNo: yup
-      .number()
-      .typeError("That doesn't look like a phone number")
-      .positive("A phone number can't start with a minus")
-      .integer("A phone number can't include a decimal point")
-      .min(10, " A mobile number is minimum 10 digit")
-      .required("A phone number is required"),
-    email: yup.string().email().required(),
-    newPassword: yup
-      .string()
-      .required("this is reqired field")
-      .min(6, "Password must minimum 6 charchters long"),
-    confirmPassword: yup
-      .string()
-      .required("confirm password")
-      .min(6, "Password must minimum 6 charchters long"),
-  });
-
-  const initialValues = {
-    name: "",
-    mobileNo: "",
-    email: "",
-    newPassword: "",
-    confirmPassword: "",
-  };
 
   return (
     <div className="py-8 bg-gray-200 md:p-24">
@@ -54,80 +70,72 @@ function SignUpPage() {
             />
           </div>
           <div className="flex flex-col ">
-            <Formik
-              initialValues={initialValues}
-              onSubmit={callSignupApi}
-              validationSchema={schema}
-              validateOnMount
+            <form
+              onSubmit={handleSubmit}
+              className="flex flex-col items-start justify-start gap-3 px-4 rounded-md"
             >
-              <Form className="flex flex-col items-start justify-start gap-3 px-4 rounded-md">
-                <Input
-                  placeholder="Name "
-                  type="text"
-                  required
-                  name="name"
-                  id="name"
-                  lable="Name"
-                  icon={<MdPermIdentity />}
-                />
+              <Input
+                onChange={handleChange}
+                onBlur={handleBlur}
+                touched={touched.name}
+                error={errors.name}
+                value={values.name}
+                placeholder="Name "
+                type="text"
+                required
+                name="name"
+                id="name"
+                lable="Name"
+                icon={<MdPermIdentity />}
+              />
 
-                <Input
-                  className="py-2 pl-10 border border-gray-500 rounded-sm focus:ring-gray-600 "
-                  placeholder="Mobile Number"
-                  type="tel"
-                  autoComplete="tel"
-                  required
-                  name="mobileNo"
-                  icon={<BsTelephone />}
-                />
+              <Input
+                onChange={handleChange}
+                onBlur={handleBlur}
+                touched={touched.email}
+                error={errors.email}
+                value={values.email}
+                className="py-2 pl-10 border border-gray-500 rounded-sm focus:ring-gray-600 "
+                placeholder="Email address"
+                type="email"
+                required
+                name="email"
+                icon={<HiOutlineMail />}
+                id="email-adress"
+              />
 
-                <Input
-                  className="py-2 pl-10 border border-gray-500 rounded-sm focus:ring-gray-600 "
-                  placeholder="Email address"
-                  type="email"
-                  required
-                  name="email"
-                  icon={<HiOutlineMail />}
-                  id="email-adress"
-                />
+              <Input
+                onChange={handleChange}
+                onBlur={handleBlur}
+                touched={touched.password}
+                error={errors.password}
+                value={values.password}
+                className="py-2 pl-10 border border-gray-500 rounded-sm focus:ring-gray-600 "
+                placeholder="Create password"
+                type="password"
+                required
+                name="password"
+                icon={<RiLockPasswordLine />}
+                id="newPassword"
+              />
 
-                <Input
-                  className="py-2 pl-10 border border-gray-500 rounded-sm focus:ring-gray-600 "
-                  placeholder="Create password"
-                  type="password"
-                  required
-                  name="newPassword"
-                  icon={<RiLockPasswordLine />}
-                  id="newPassword"
-                />
-
-                <Input
-                  className="py-2 pl-10 border border-gray-500 rounded-sm focus:ring-gray-600 "
-                  placeholder="Confirm password"
-                  type="password"
-                  required
-                  name="confirmPassword"
-                  icon={<RiLockPasswordLine />}
-                  id="confirm-password"
-                />
-
-                <div className="flex justify-between space-x-2">
-                  <button
-                    type="submit"
-                    className="p-2 mt-4 font-bold bg-red-500 rounded-sm disabled:bg-red-200 disabled:text-gray-500 font-bol hover:bg-red-800 hover:text-white"
-                  >
-                    Sign up now
-                  </button>
-                  {/* <button
+              <div className="flex justify-between space-x-2">
+                <button
+                  type="submit"
+                  className="p-2 mt-4 font-bold bg-red-500 rounded-sm disabled:bg-red-200 disabled:text-gray-500 font-bol hover:bg-red-800 hover:text-white"
+                >
+                  Sign up now
+                </button>
+                {/* <button
                     onClick={resetForm}
                     type="button"
                     className="p-2 mt-4 font-bold bg-blue-500 rounded-sm font-bol hover:bg-blue-800 hover:text-white"
                   >
                     Reset Form
                   </button> */}
-                </div>
-              </Form>
-            </Formik>
+              </div>
+            </form>
+
             <div className="flex gap-2 px-4 mt-6">
               <p>Already a member ?</p>
               <Link
@@ -143,4 +151,11 @@ function SignUpPage() {
     </div>
   );
 }
-export default SignUpPage;
+
+const myHOC = withFormik({
+  initialValues: initialValues,
+  handleSubmit: callSignupApi,
+  validationSchema: schema,
+  validateOnMount: true,
+});
+export default myHOC(SignUpPage);

@@ -16,11 +16,10 @@ function CartRow({ id, thumbnail, title, price, subTotal }) {
   } = useContext(cartContext);
 
   const [quantity, setQuantity] = useState(cartdata[id]);
-  console.log(" cartdata", cartdata);
 
   function handleQuantityChange(event) {
     const newValue = +event.target.value;
-    const productId = +event.target.getAttribute("productid");
+    const productId = event.target.getAttribute("productid");
     console.log("now the cart is ", productId, newValue);
     const newLocalCart = { ...localCart, [productId]: newValue };
     setLocalCart(newLocalCart);

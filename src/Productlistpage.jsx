@@ -4,8 +4,21 @@ import NoMatch from "./NoMatching";
 import { getProductList } from "./api";
 import Loading from "./LoadingPage";
 import { HiArrowNarrowRight } from "react-icons/hi";
+// import { userContext } from "./App";
+// import { useContext } from "react";
+import { Navigate } from "react-router-dom";
+import { MdPermIdentity } from "react-icons/md";
 
-function Productlistpage() {
+function Productlistpage({ user, setUser }) {
+  if (!user) {
+    return <Navigate to="/login"></Navigate>;
+  }
+  const logout = () => {
+    localStorage.removeItem("token");
+    setUser(undefined);
+  };
+  // const { detail } = useContext(userContext);
+
   const [productList, setProductList] = useState([]);
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState("default");
@@ -58,23 +71,36 @@ function Productlistpage() {
   return (
     <>
       <div className="max-w-6xl p-3 mx-auto my-8 bg-white md:px-7 lg:px-8 xl:px-24 md:my-16 md:py-8 xl:py-20">
-        <div className="flex flex-col justify-between gap-3 sm:flex-row">
-          <input
-            className="p-1 text-gray-400 border border-black rounded-md"
-            value={query}
-            placeholder="search  !"
-            onChange={handleQueryChange}
-          />
-          <select
-            className="text-gray-400 border border-black "
-            onChange={handleSortingChange}
-            value={sort}
-          >
-            <option value="default">Default sorting</option>
-            <option value="HighToLow">short by prize: high to low </option>
-            <option value="lowToHigh">short by prize: low to high</option>
-            <option value="name">short by name: (A-Z)</option>
-          </select>
+        <div className="flex flex-col gap-2 ">
+          <div className="flex flex-col items-center self-center gap-1">
+            <MdPermIdentity className="text-3xl " />
+            <span className="font-bold">{user.full_name}</span>
+            <button
+              className="p-1 font-semibold bg-red-400 rounded-md"
+              onClick={logout}
+            >
+              logout
+            </button>
+          </div>
+          <div className="flex flex-col justify-between gap-3 sm:flex-row">
+            <input
+              className="p-1 text-gray-400 border border-black rounded-md"
+              value={query}
+              placeholder="search  !"
+              onChange={handleQueryChange}
+            />
+
+            <select
+              className="text-gray-400 border border-black "
+              onChange={handleSortingChange}
+              value={sort}
+            >
+              <option value="default">Default sorting</option>
+              <option value="HighToLow">short by prize: high to low </option>
+              <option value="lowToHigh">short by prize: low to high</option>
+              <option value="name">short by name: (A-Z)</option>
+            </select>
+          </div>
         </div>
         <div className="justify-center max-w-6xl mx-auto">
           {data.length > 0 && <Productlist Products={data} />}

@@ -57,7 +57,6 @@ function CartPage({ cart, updateCart }) {
   }, 0);
 
   const [total, setTotal] = useState(subTotal);
-  console.log("total is ", subTotal);
 
   function handleApplyChange() {
     if (event.target.value == "ADHIKARI89") {
