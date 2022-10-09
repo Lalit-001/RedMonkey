@@ -9,8 +9,13 @@ import MobileMenu from "./MobileMenu";
 // import { userContext } from "./App";
 import { MdPermIdentity } from "react-icons/md";
 
-function Navbar({ productCount, user }) {
+function Navbar({ productCount, user, setUser }) {
   const [homeMenu, setHomeMenu] = useState(false);
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    setUser(undefined);
+  };
 
   function handleHomeMenuOpen() {
     setHomeMenu(true);
@@ -27,6 +32,18 @@ function Navbar({ productCount, user }) {
             src="https://cdn.discordapp.com/attachments/998848043967320082/1017353101168103425/logo_red_monkey_3.jpg"
             className="w-full"
           />
+        </div>
+        <div className="flex flex-col items-center self-center gap-1">
+          <div className="flex">
+            <MdPermIdentity className="text-3xl " />
+            <span className="font-bold">{user.full_name}</span>
+          </div>
+          <button
+            className="px-2 font-semibold bg-red-400 border border-gray-900 rounded-md"
+            onClick={logout}
+          >
+            logout
+          </button>
         </div>
 
         <div className="flex gap-4 md:gap-8">

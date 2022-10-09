@@ -13,10 +13,10 @@ import ForgetPassPage from "./ForgetPassPage";
 import { createContext } from "react";
 import { useEffect } from "react";
 import axios from "axios";
-// import UserRoute from "./UserRoute";
-// import AuthRoute from "./AuthRoute";
 import Loading from "./LoadingPage";
-
+import AuthRoute from "./AuthRoute";
+import UserRoute from "./UserRoute";
+import Table from "./Table";
 // export const userContext = createContext();
 
 function App() {
@@ -70,34 +70,62 @@ function App() {
   return (
     <div className="flex flex-col h-screen overflow-scroll bg-gray-200 ">
       {/* <userContext.Provider value={data}> */}
-      <Navbar productCount={totalCount} user={user} setUser={setUser} />
+
+      {user && (
+        <Navbar productCount={totalCount} user={user} setUser={setUser} />
+      )}
+
       <div className="flex flex-col justify-center grow">
         <Routes>
           <Route
             index
-            element={<Productlistpage setUser={setUser} user={user} />}
+            element={
+              <UserRoute user={user}>
+                <Productlistpage setUser={setUser} user={user} />
+              </UserRoute>
+            }
           ></Route>
           <Route
             path="/Products/:id"
-            element={<ProductDetail onAddToCart={handleAddToCart} />}
+            element={
+              <UserRoute user={user}>
+                <ProductDetail onAddToCart={handleAddToCart} />
+              </UserRoute>
+            }
           ></Route>
           <Route
             path="/cart"
-            element={<CartPage cart={cart} updateCart={updateCart} />}
+            element={
+              <UserRoute user={user}>
+                <CartPage cart={cart} updateCart={updateCart} />
+              </UserRoute>
+            }
           ></Route>
+
+          {/* -------------------------auth-----------------*/}
           <Route
             path="/login"
-            element={<LoginPage user={user} setUser={setUser} />}
+            element={
+              <AuthRoute user={user}>
+                <LoginPage user={user} setUser={setUser} />
+              </AuthRoute>
+            }
           ></Route>
           <Route
             path="/signUp"
-            element={<SignUpPage setUser={setUser} user={user} />}
+            element={
+              <AuthRoute user={user}>
+                <SignUpPage setUser={setUser} user={user} />
+              </AuthRoute>
+            }
           ></Route>
+          {/* -------------------------auth-----------------*/}
+
           <Route path="/forget" element={<ForgetPassPage />}></Route>
           <Route path="/*" element={<Error />}></Route>
         </Routes>
       </div>
-      <Footer />
+      {user && <Footer />}
       {/* </userContext.Provider> */}
     </div>
   );

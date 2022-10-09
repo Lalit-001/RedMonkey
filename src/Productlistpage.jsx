@@ -10,13 +10,10 @@ import { Navigate } from "react-router-dom";
 import { MdPermIdentity } from "react-icons/md";
 
 function Productlistpage({ user, setUser }) {
-  if (!user) {
-    return <Navigate to="/login"></Navigate>;
-  }
-  const logout = () => {
-    localStorage.removeItem("token");
-    setUser(undefined);
-  };
+  // if (!user) {
+  //   return <Navigate to="/login"></Navigate>;
+  // }
+
   // const { detail } = useContext(userContext);
 
   const [productList, setProductList] = useState([]);
@@ -72,16 +69,6 @@ function Productlistpage({ user, setUser }) {
     <>
       <div className="max-w-6xl p-3 mx-auto my-8 bg-white md:px-7 lg:px-8 xl:px-24 md:my-16 md:py-8 xl:py-20">
         <div className="flex flex-col gap-2 ">
-          <div className="flex flex-col items-center self-center gap-1">
-            <MdPermIdentity className="text-3xl " />
-            <span className="font-bold">{user.full_name}</span>
-            <button
-              className="p-1 font-semibold bg-red-400 rounded-md"
-              onClick={logout}
-            >
-              logout
-            </button>
-          </div>
           <div className="flex flex-col justify-between gap-3 sm:flex-row">
             <input
               className="p-1 text-gray-400 border border-black rounded-md"

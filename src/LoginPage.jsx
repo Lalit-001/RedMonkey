@@ -48,11 +48,10 @@ function LoginPage({
   errors,
   handleChange,
   touched,
-  user,
 }) {
-  if (user) {
-    return <Navigate to="/"></Navigate>;
-  }
+  // if (user) {
+  //   return <Navigate to="/"></Navigate>;
+  // }
   return (
     <div className="py-8 bg-gray-200 md:p-16">
       <div className="p-6 overflow-hidden bg-white rounded-sm md:p-24">

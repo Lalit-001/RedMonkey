@@ -51,12 +51,10 @@ function SignUpPage({
   errors,
   handleChange,
   touched,
-  user,
 }) {
-  console.log("user", user);
-  if (user) {
-    return <Navigate to="/" />;
-  }
+  // if (user) {
+  //   return <Navigate to="/" />;
+  // }
 
   return (
     <div className="py-8 bg-gray-200 md:p-24">
