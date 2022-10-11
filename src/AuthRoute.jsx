@@ -1,7 +1,9 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
 
-const AuthRoute = ({ user, children }) => {
+import { WithUser } from "./WithProvider";
+
+const AuthRoute = ({ children, user }) => {
   if (user) {
     return <Navigate to="/" />;
   }
@@ -9,4 +11,4 @@ const AuthRoute = ({ user, children }) => {
   return children;
 };
 
-export default AuthRoute;
+export default WithUser(AuthRoute);

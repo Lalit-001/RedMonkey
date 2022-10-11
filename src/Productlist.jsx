@@ -3,7 +3,7 @@ import Product from "./Product";
 
 function Productlist({ Products }) {
   return (
-    <div className="grid items-center grid-cols-2 md:gap-4 md:grid-cols-3">
+    <div className="grid grid-cols-2 md:gap-4 md:grid-cols-3">
       {Products.map(function (item) {
         return <Product key={item.id} {...item} />;
       })}

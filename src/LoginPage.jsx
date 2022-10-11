@@ -1,17 +1,14 @@
 import React from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { HiOutlineMail } from "react-icons/hi";
 import { RiLockPasswordLine } from "react-icons/ri";
-import { Formik, Form } from "formik";
 import * as yup from "yup";
 import Input from "./Inputs/Input";
 import { withFormik } from "formik";
 import axios from "axios";
-import { useTransition } from "react";
-// import { useContext } from "react";
-// import { userContext } from "./App";
+import { WithUser, WithAlert } from "./WithProvider";
+
 function callLoginApi(values, bag) {
-  console.log(bag);
   axios
     .post("https://myeasykart.codeyogi.io/login", {
       email: values.email,
@@ -22,9 +19,13 @@ function callLoginApi(values, bag) {
       console.log("calLoginApi called", user, token);
       localStorage.setItem("token", token);
       bag.props.setUser(user);
+      bag.props.setAlert({ type: "sucess", message: "login sucessFull " });
     })
     .catch(() => {
-      console.log("invalid credential");
+      bag.props.setAlert({
+        type: "error",
+        message: "Invalid credential ,login failed !",
+      });
     });
 }
 
@@ -48,12 +49,11 @@ function LoginPage({
   errors,
   handleChange,
   touched,
+  alert,
+  setAlert,
 }) {
-  // if (user) {
-  //   return <Navigate to="/"></Navigate>;
-  // }
   return (
-    <div className="py-8 bg-gray-200 md:p-16">
+    <div className="">
       <div className="p-6 overflow-hidden bg-white rounded-sm md:p-24">
         <div className="flex flex-col justify-start gap-4 p-4 border border-gray-600 md:flex-row">
           <div className="px-4 ">
@@ -151,4 +151,4 @@ const myHOC = withFormik({
   validationSchema: schema,
   validateOnMount: true,
 });
-export default myHOC(LoginPage);
+export default WithAlert(WithUser(myHOC(LoginPage)));

@@ -4,17 +4,11 @@ import NoMatch from "./NoMatching";
 import { getProductList } from "./api";
 import Loading from "./LoadingPage";
 import { HiArrowNarrowRight } from "react-icons/hi";
-// import { userContext } from "./App";
-// import { useContext } from "react";
-import { Navigate } from "react-router-dom";
-import { MdPermIdentity } from "react-icons/md";
+import { userContext } from "./Contexts";
+import { useContext } from "react";
 
-function Productlistpage({ user, setUser }) {
-  // if (!user) {
-  //   return <Navigate to="/login"></Navigate>;
-  // }
-
-  // const { detail } = useContext(userContext);
+function Productlistpage() {
+  const { user, setUser } = useContext(userContext);
 
   const [productList, setProductList] = useState([]);
   const [query, setQuery] = useState("");
@@ -67,7 +61,7 @@ function Productlistpage({ user, setUser }) {
 
   return (
     <>
-      <div className="max-w-6xl p-3 mx-auto my-8 bg-white md:px-7 lg:px-8 xl:px-24 md:my-16 md:py-8 xl:py-20">
+      <div className="max-w-6xl p-8 mx-auto bg-white md:p-20">
         <div className="flex flex-col gap-2 ">
           <div className="flex flex-col justify-between gap-3 sm:flex-row">
             <input

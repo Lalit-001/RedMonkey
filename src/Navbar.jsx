@@ -5,9 +5,8 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { HiX } from "react-icons/hi";
 import { useState } from "react";
 import MobileMenu from "./MobileMenu";
-// import { useContext } from "react";
-// import { userContext } from "./App";
 import { MdPermIdentity } from "react-icons/md";
+import { WithUser } from "./WithProvider";
 
 function Navbar({ productCount, user, setUser }) {
   const [homeMenu, setHomeMenu] = useState(false);
@@ -104,4 +103,4 @@ function Navbar({ productCount, user, setUser }) {
     </div>
   );
 }
-export default Navbar;
+export default WithUser(Navbar);

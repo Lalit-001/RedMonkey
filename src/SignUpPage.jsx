@@ -1,14 +1,14 @@
 import React from "react";
 import { RiLockPasswordLine } from "react-icons/ri";
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { MdPermIdentity } from "react-icons/md";
 import { HiOutlineMail } from "react-icons/hi";
 import * as yup from "yup";
-import { Formik, Form, withFormik } from "formik";
+import { withFormik } from "formik";
 import Input from "./Inputs/Input";
 import axios from "axios";
-// import { useContext } from "react";
-// import { userContext } from "./App";
+
+import { WithUser, WithAlert } from "./WithProvider";
 
 function callSignupApi(values, bag) {
   axios
@@ -22,9 +22,17 @@ function callSignupApi(values, bag) {
       console.log("sigup api called", user, token);
       localStorage.setItem("token", token);
       bag.props.setUser(user);
+      bag.props.setAlert({
+        type: "sucess",
+        message: "signUp sucessfull new account created",
+      });
     })
     .catch(() => {
       console.log("invalid credential");
+      bag.props.setAlert({
+        type: "error",
+        message: "Check your input field ,signUp failed !",
+      });
     });
 }
 
@@ -43,7 +51,7 @@ const initialValues = {
   email: "",
   password: "",
 };
-
+//----------------------------page---------------------//
 function SignUpPage({
   handleSubmit,
   handleBlur,
@@ -52,12 +60,8 @@ function SignUpPage({
   handleChange,
   touched,
 }) {
-  // if (user) {
-  //   return <Navigate to="/" />;
-  // }
-
   return (
-    <div className="py-8 bg-gray-200 md:p-24">
+    <div className="">
       <div className="flex flex-col items-center px-8 py-12 overflow-hidden bg-white">
         <h1 className="mb-8 font-serif text-3xl font-bold"> Sign Up </h1>
         <div className="flex justify-center gap-4 p-8 border border-gray-500">
@@ -156,4 +160,4 @@ const myHOC = withFormik({
   validationSchema: schema,
   validateOnMount: true,
 });
-export default myHOC(SignUpPage);
+export default WithAlert(WithUser(myHOC(SignUpPage)));

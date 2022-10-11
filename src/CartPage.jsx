@@ -87,7 +87,7 @@ function CartPage({ cart, updateCart }) {
   }
 
   return (
-    <div className="p-4 bg-gray-200 ">
+    <div className="">
       <cartContext.Provider value={data}>
         <div className="flex flex-col p-6 bg-white md:px-20 md:py-14">
           <Link to="/">
