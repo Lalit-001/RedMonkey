@@ -19,7 +19,6 @@ import Alert from "./Alert";
 import { alertContext, userContext } from "./Contexts";
 
 function App() {
-  console.log("app run");
   const savedDataString = localStorage.getItem("my-cart") || "{}";
   const savedData = JSON.parse(savedDataString);
   const [user, setUser] = useState();
@@ -36,7 +35,6 @@ function App() {
         })
         .then((response) => {
           setUser(response.data);
-          console.log(response.data);
           setLoading(false);
         })
         .catch(() => {
@@ -75,7 +73,12 @@ function App() {
       <userContext.Provider value={{ user, setUser }}>
         <alertContext.Provider value={{ alert, setAlert, removeAlert }}>
           {user && (
-            <Navbar productCount={totalCount} user={user} setUser={setUser} />
+            <Navbar
+              productCount={totalCount}
+              setCart={setCart}
+              user={user}
+              setUser={setUser}
+            />
           )}
 
           <div className="flex flex-col justify-center max-w-6xl m-auto my-8 grow">

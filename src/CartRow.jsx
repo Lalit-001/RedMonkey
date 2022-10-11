@@ -3,7 +3,6 @@ import { HiOutlineXCircle } from "react-icons/hi";
 import { useState } from "react";
 import { cartContext } from "./CartPage";
 import { useContext } from "react";
-import { BsArrowReturnRight } from "react-icons/bs";
 
 function CartRow({ id, thumbnail, title, price, subTotal }) {
   const {
@@ -20,7 +19,6 @@ function CartRow({ id, thumbnail, title, price, subTotal }) {
   function handleQuantityChange(event) {
     const newValue = +event.target.value;
     const productId = event.target.getAttribute("productid");
-    console.log("now the cart is ", productId, newValue);
     const newLocalCart = { ...localCart, [productId]: newValue };
     setLocalCart(newLocalCart);
     setQuantity(newLocalCart[id]);
@@ -28,7 +26,6 @@ function CartRow({ id, thumbnail, title, price, subTotal }) {
   function handleRemove(event) {
     const productId = event.currentTarget.getAttribute("productid");
     const newCart = { ...cartdata };
-    console.log("product to be removed ", productId);
     delete newCart[productId];
     console.log(" cartdata", newCart);
     setCartData(newCart);

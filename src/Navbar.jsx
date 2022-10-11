@@ -8,12 +8,14 @@ import MobileMenu from "./MobileMenu";
 import { MdPermIdentity } from "react-icons/md";
 import { WithUser } from "./WithProvider";
 
-function Navbar({ productCount, user, setUser }) {
+function Navbar({ productCount, setCart, user, setUser }) {
   const [homeMenu, setHomeMenu] = useState(false);
 
   const logout = () => {
     localStorage.removeItem("token");
     setUser(undefined);
+    localStorage.removeItem("my-cart");
+    setCart({});
   };
 
   function handleHomeMenuOpen() {

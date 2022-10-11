@@ -16,7 +16,6 @@ function callLoginApi(values, bag) {
     })
     .then((response) => {
       const { user, token } = response.data;
-      console.log("calLoginApi called", user, token);
       localStorage.setItem("token", token);
       bag.props.setUser(user);
       bag.props.setAlert({ type: "sucess", message: "login sucessFull " });

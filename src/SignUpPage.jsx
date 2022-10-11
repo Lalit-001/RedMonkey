@@ -19,7 +19,6 @@ function callSignupApi(values, bag) {
     })
     .then((response) => {
       const { user, token } = response.data;
-      console.log("sigup api called", user, token);
       localStorage.setItem("token", token);
       bag.props.setUser(user);
       bag.props.setAlert({
