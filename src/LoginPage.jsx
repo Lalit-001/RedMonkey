@@ -48,8 +48,6 @@ function LoginPage({
   errors,
   handleChange,
   touched,
-  alert,
-  setAlert,
 }) {
   return (
     <div className="">

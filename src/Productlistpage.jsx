@@ -3,53 +3,60 @@ import Productlist from "./Productlist";
 import NoMatch from "./NoMatching";
 import { getProductList } from "./api";
 import Loading from "./LoadingPage";
-import { HiArrowNarrowRight } from "react-icons/hi";
-import { userContext } from "./Contexts";
-import { useContext } from "react";
+import { HiArrowNarrowLeft, HiArrowNarrowRight } from "react-icons/hi";
+import PageLink from "./Button.jsx/PageLink";
+import { range } from "lodash";
+import { Link, useSearchParams } from "react-router-dom";
 
 function Productlistpage() {
-  const { user, setUser } = useContext(userContext);
+  const [productData, setProductData] = useState({});
 
-  const [productList, setProductList] = useState([]);
-  const [query, setQuery] = useState("");
-  const [sort, setSort] = useState("default");
   const [loading, setLoading] = useState(true);
-  useEffect(function () {
-    const List = getProductList();
-    List.then(function (products) {
-      setProductList(products);
-      setLoading(false);
-    }).catch(function () {
-      setLoading(false);
-    });
-  }, []);
 
-  const data = productList.filter(function (item) {
-    const lowercasequery = query.toLowerCase();
-    const lowercasetittle = item.title.toLowerCase();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-    return lowercasetittle.indexOf(lowercasequery) != -1;
-  });
+  const params = Object.fromEntries([...searchParams]);
+  let { sort, query, page } = params;
 
-  if (sort == "HighToLow") {
-    data.sort(function (x, y) {
-      return y.price - x.price;
-    });
-  } else if (sort == "lowToHigh") {
-    data.sort(function (x, y) {
-      return x.price - y.price;
-    });
-  } else if (sort == "name") {
-    data.sort(function (x, y) {
-      return x.title > y.title ? 1 : -1;
-    });
-  }
+  sort = sort || "default";
+  query = query || "";
+  page = page || 1;
+  useEffect(
+    function () {
+      let sortBy;
+      let sortType;
+      if (sort == "title") {
+        sortBy = "title";
+      } else if (sort == "highToLow") {
+        sortBy = "price";
+        sortType = "desc";
+      } else if (sort == "lowToHigh") {
+        sortBy = "price";
+      }
+      const List = getProductList(sortBy, query, page, sortType)
+        .then(function (products) {
+          setProductData(products);
+          setLoading(false);
+        })
+        .catch(function () {
+          setLoading(false);
+        });
+    },
+    [sort, query, page]
+  );
+
   function handleQueryChange(event) {
-    setQuery(event.target.value);
+    setSearchParams(
+      { ...params, query: event.target.value },
+      { replace: false }
+    );
   }
 
   function handleSortingChange(event) {
-    setSort(event.target.value);
+    setSearchParams(
+      { ...params, sort: event.target.value, page: 1 },
+      { replace: false }
+    );
   }
   if (loading) {
     return (
@@ -77,26 +84,49 @@ function Productlistpage() {
               value={sort}
             >
               <option value="default">Default sorting</option>
-              <option value="HighToLow">short by prize: high to low </option>
+              <option value="highToLow">short by prize: high to low </option>
               <option value="lowToHigh">short by prize: low to high</option>
-              <option value="name">short by name: (A-Z)</option>
+              <option value="title">short by name: (A-Z)</option>
             </select>
           </div>
         </div>
         <div className="justify-center max-w-6xl mx-auto">
-          {data.length > 0 && <Productlist Products={data} />}
-          {data.length == 0 && <NoMatch />}
+          {productData.data.length > 0 && (
+            <Productlist Products={productData.data} />
+          )}
+          {productData.data.length == 0 && <NoMatch />}
         </div>
-        <div className="flex gap-2 ">
-          <button className="w-8 text-xl text-center border border-primary-dark hover:bg-primary-default">
-            1
-          </button>
-          <button className="w-8 text-xl text-center border border-primary-dark hover:bg-primary-default">
-            2
-          </button>
-          <button className="w-8 text-xl text-center border border-primary-dark hover:bg-primary-default">
-            <HiArrowNarrowRight />
-          </button>
+
+        <div className="flex gap-2 mt-4 overflow-hidden">
+          {page > 1 && (
+            <PageLink
+              to={"?" + new URLSearchParams({ ...params, page: +page - 1 })}
+              className="px-2 py-1 text-lg font-bold text-center border border-gray-400 hover:bg-red-600 "
+            >
+              <HiArrowNarrowLeft />
+            </PageLink>
+          )}
+
+          {productData.meta.last_page > 1 &&
+            range(1, productData.meta.last_page + 1).map((pageNo) => (
+              <Link
+                to={"?" + new URLSearchParams({ ...params, page: pageNo })}
+                key={pageNo}
+                className={
+                  "px-2 py-1 text-lg font-bold text-center border border-gray-400 hover:bg-red-600 " +
+                  (pageNo == page ? "bg-red-600 " : "bg-white")
+                }
+              >
+                {pageNo}
+              </Link>
+            ))}
+          {page != productData.meta.last_page && (
+            <PageLink
+              to={"?" + new URLSearchParams({ ...params, page: +page + 1 })}
+            >
+              <HiArrowNarrowRight />
+            </PageLink>
+          )}
         </div>
       </div>
     </>
